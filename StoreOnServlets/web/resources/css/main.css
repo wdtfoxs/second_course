@@ -1,0 +1,14 @@
+div#tovar{
+    margin-top: 3%;
+}
+body{
+    background-image:url(/resources/image/background3.jpg);
+    background-size: 100%;
+    background-attachment: fixed;
+}
+.thumbnail{
+    width: 330px;
+    height: 345px;
+    overflow: auto;
+    background-color: #FFFAFA;
+}
