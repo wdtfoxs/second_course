@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="roomListApp">
+<head>
+    <title>Room Planner</title>
+    <script src="resources/angular.js"></script>
+    <script src="resources/mouseCoords.js"></script>
+    <script src="resources/functions.js"></script>
+    <script src="resources/models.js"></script>
+
+    <link href="resources/room.css" rel="stylesheet"/>
+    <link href="resources/bootstrap.css" rel="stylesheet"/>
+    <link href="resources/bootstrap-theme.css" rel="stylesheet"/>
+</head>
+<body ng-controller="RoomListController" ng-mousemove=move()>
+<div class="container">
+    <div class="page-header">
+        <div class="page-header">
+            <h1> Планировщик комнаты. </h1>
+
+            <h3>Комната: {{list.room}}. Количество мебели - {{list.furniture.length}}</h3>
+        </div>
+        <h3>Координата X: {{getX()}}</h3>
+
+        <h3>Координата Y: {{getY()}}</h3>
+    </div>
+    <div class="panel">
+        <!--Добавление новой комнаты-->
+        <div class="input-group">
+            <form class="form-horizontal row" name="sampleForm" novalidate>
+                Название: <input type="text" ng-model="roomName" pattern=".*"/>
+                Ширина: <input type="number" ng-model="width" min="1"/>
+                Длина: <input type="number" ng-model="length" min="1"/>
+                Цвет: <input ng-model="color"/>
+                <input type="submit" class="btn btn-success" ng-click="addNewFurniture()" value="Добавить">
+            </form>
+        </div>
+
+        <!-- Список всей мебели-->
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Имя</th>
+                <th>Координаты</th>
+                <th>Ширина</th>
+                <th>Длина</th>
+                <th>Цвет</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="furniture in list.furniture">
+                <td>{{$index + 1}}</td>
+                <td>{{furniture.name}}</td>
+                <td>x={{furniture.coordX}}<br>y={{furniture.coordY}}</td>
+                <td><input type="text" ng-model="furniture.width" value="{{furniture.width}}" ng-blur="checkingX(furniture)" size="1"/></td>
+                <td><input type="text" ng-model="furniture.length" value="{{furniture.length}}" ng-blur="checkingY(furniture)" size="1"/></td>
+                <td><input type="text" ng-model="furniture.color" value="{{furniture.color}}" ng-blur="changeColor(furniture)" size="3"/></td>
+                <td>
+                    <button class="btn btn-danger" ng-click="delete($index)">Удалить</button>
+                </td>
+                <td>
+                    <button class="btn btn-info" ng-click="rotateFurniture(furniture)">Перевернуть</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <!-- Комната-->
+        <div class="main_field" style={{mainRoomStyle()}}>
+            <div ng-repeat="thing in list.furniture" class="thing_css" style="{{thingStyle(thing)}}"
+                 ng-mousedown="holdObject(thing)" ng-mouseup="free()">
+                {{thing.name}}
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
